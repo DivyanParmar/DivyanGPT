@@ -1,9 +1,31 @@
-
+/*
  import { Assistant } from "./assistant";
 
 export default function Home() {
   return <Assistant />;
 } 
+*/
+'use client';
+
+import Chat from "@/components/ui/chat";
+import Sidebar from "@/components/ui/sidebar";
+
+export default function Home() {
+  return (
+    <div className="flex flex-col md:flex-row h-screen overflow-hidden">
+      {/* Sidebar hidden on small screens */}
+      <div className="hidden md:block md:w-1/4 border-r border-gray-200 dark:border-gray-700">
+        <Sidebar />
+      </div>
+
+      {/* Main Chat Area */}
+      <div className="flex-1 w-full md:w-3/4 flex flex-col">
+        <Chat />
+      </div>
+    </div>
+  );
+}
+
 /*
 'use client';
 
