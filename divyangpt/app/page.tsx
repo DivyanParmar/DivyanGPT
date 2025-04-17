@@ -7,24 +7,62 @@ export default function Home() {
 */
 'use client';
 
-import Chat from "@/components/ui/chat";
-import Sidebar from "@/components/ui/sidebar";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
+  const [messages, setMessages] = useState<string[]>([]);
+  const [input, setInput] = useState("");
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  const sendMessage = () => {
+    if (input.trim()) {
+      setMessages([...messages, input]);
+      setInput("");
+    }
+  };
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
-    <div className="flex flex-col md:flex-row h-screen overflow-hidden">
-      {/* Sidebar hidden on small screens */}
-      <div className="hidden md:block md:w-1/4 border-r border-gray-200 dark:border-gray-700">
-        <Sidebar />
+    <div className="flex flex-col h-screen">
+      {/* Chat Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-white dark:bg-gray-900">
+        {messages.map((msg, idx) => (
+          <div
+            key={idx}
+            className="p-3 rounded-md bg-gray-200 dark:bg-gray-800 text-black dark:text-white w-fit max-w-[80%]"
+          >
+            {msg}
+          </div>
+        ))}
+        <div ref={bottomRef} />
       </div>
 
-      {/* Main Chat Area */}
-      <div className="flex-1 w-full md:w-3/4 flex flex-col">
-        <Chat />
+      {/* Input Area */}
+      <div className="p-4 border-t border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900">
+        <div className="flex gap-2">
+          <input
+            className="flex-1 px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            type="text"
+            placeholder="Type your message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          />
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            onClick={sendMessage}
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );
 }
+
 
 /*
 'use client';
