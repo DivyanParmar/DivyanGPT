@@ -1,9 +1,10 @@
-/* import { Assistant } from "./assistant";
+ import { Assistant } from "./assistant";
 
 export default function Home() {
   return <Assistant />;
 }
-*/
+
+/*
 'use client';
 
 import { useState } from 'react';
@@ -54,3 +55,4 @@ export default function Home() {
     </div>
   );
 }
+*/
