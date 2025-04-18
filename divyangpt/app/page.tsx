@@ -9,22 +9,32 @@ export default function Home() {
 
 import { useState, useRef, useEffect } from "react";
 
+type Message = {
+  sender: "user" | "bot";
+  text: string;
+};
+
 export default function Home() {
-  const [messages, setMessages] = useState<{ sender: "user" | "bot"; text: string }[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = () => {
     if (!input.trim()) return;
 
-    const userMessage = { sender: "user" as const, text: input };
-    const botReply = {
-      sender: "bot" as const,
-      text: "This is a sample AI response. (You can connect it to an API!)",
-    };
+    const userMsg: Message = { sender: "user", text: input };
 
-    setMessages((prev) => [...prev, userMessage, botReply]);
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
+
+    // Simulate AI response
+    setTimeout(() => {
+      const botMsg: Message = {
+        sender: "bot",
+        text: "🤖 This is a sample AI response. (You can connect it to OpenAI API!)",
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    }, 500);
   };
 
   useEffect(() => {
@@ -33,7 +43,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900 text-black dark:text-white">
-      {/* Chat Area */}
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, idx) => (
           <div
@@ -54,9 +64,9 @@ export default function Home() {
         <div ref={bottomRef} />
       </div>
 
-      {/* Input Area */}
+      {/* Input */}
       <div className="p-4 border-t border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900">
-        <div className="flex items-center gap-2">
+        <div className="flex gap-2">
           <input
             type="text"
             value={input}
@@ -76,6 +86,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 
